@@ -131,6 +131,8 @@ Navigate to the Islandora core configuration page at `/admin/config/islandora/co
 
 Navigate to `/admin/config/islandora/iiif` to ensure that Islandora IIIF is pointing to our Cantaloupe server.
 
+If you installed Cantaloupe 5 according with the default configuration, it is likely that your server location is http://localhost:8182/iiif/2
+
 ![Configuring Islandora IIIF](../../assets/configuring_iiif.png)
 
 Next, configure Openseadragon by navigating to `/admin/config/media/openseadragon` and ensuring everything is set up properly.

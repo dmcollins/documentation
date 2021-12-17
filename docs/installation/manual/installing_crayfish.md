@@ -105,7 +105,7 @@ Currently the Houdini microservice uses a different system (Symfony) than the ot
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    app.executable: /usr/local/bin/convert
+    app.executable: /usr/bin/convert
     app.formats.valid:
         - image/jpeg
         - image/png
@@ -139,7 +139,7 @@ services:
     # please note that last definitions always *replace* previous ones
 ```
 
-`/opt/crayfish/Houdini/config/packages/crayfish_commons.yml | www-data:www-data/644`
+`/opt/crayfish/Houdini/config/packages/crayfish_commons.yaml | www-data:www-data/644`
 ```yaml
 crayfish_commons:
   fedora_base_uri: 'http://localhost:8080/fcrepo/rest'
@@ -161,7 +161,7 @@ monolog:
 
 The below files are two versions of the same file to enable or disable JWT token authentication.
 
-`/opt/crayfish/Houdini/config/packages/security.yml | www-data:www-data/644`
+`/opt/crayfish/Houdini/config/packages/security.yaml | www-data:www-data/644`
 
 Enabled JWT token authentication:
 ```yaml

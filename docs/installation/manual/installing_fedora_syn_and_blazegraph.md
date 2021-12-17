@@ -245,7 +245,7 @@ We need our Tomcat `JAVA_OPTS` to include references to our repository configura
 > 3 | export JAVA_OPTS="-Djava.awt.headless=true -server -Xmx1500m -Xms1000m"
 
 **After**:
-> 3 | export JAVA_OPTS="-Djava.awt.headless=true -Dfcrepo.home=/otp/fcrepo/data -Dfcrepo.velocity.runtime.log=/opt/tomcat/logs/velocity.log -Dfcrepo.jms.baseUrl=http://localhost:8080/fcrepo/rest -Dfcrepo.autoversioning.enabled=false -DconnectionTimeout=-1 -Dfcrepo.db.url=jdbc:postgresql://localhost:5432/fcrepo -Dfcrepo.db.user=fedora -Dfcrepo.db.password=fedora -server -Xmx1500m -Xms1000m"
+> 3 | export JAVA_OPTS="-Djava.awt.headless=true -Dfcrepo.home=/opt/fcrepo/data -Dfcrepo.velocity.runtime.log=/opt/tomcat/logs/velocity.log -Dfcrepo.jms.baseUrl=http://localhost:8080/fcrepo/rest -Dfcrepo.autoversioning.enabled=false -DconnectionTimeout=-1 -Dfcrepo.db.url=jdbc:postgresql://localhost:5432/FEDORA_DB -Dfcrepo.db.user=FEDORA_DB_USER -Dfcrepo.db.password=FEDORA_DB_PASSWORD -server -Xmx1500m -Xms1000m"
 
 ### Ensuring Tomcat Users Are In Place
 
@@ -324,7 +324,7 @@ sudo chown www-data:www-data /opt/keys/syn*
 
 Syn sites and tokens belong in a settings file that we’re going to reference in Tomcat.
 
-`/opt/fcrepo/config/syn-settings.xml | tomcat:tomcat/600`
+`/opt/fcrepo/config/syn-settings.xml | tomcat:tomcat/644`
 ```xml
 <config version='1' header='X-Islandora'>
   <site algorithm='RS256' encoding='PEM' anonymous='true' default='true' path='/opt/keys/syn_public.key'/>
@@ -479,11 +479,11 @@ In order to enable our configuration when Tomcat starts, we need to reference th
 `/opt/tomcat/bin/setenv.sh`
 
 **Before**:
-> 3 | export JAVA_OPTS="-Djava.awt.headless=true -Dfcrepo.home=/otp/fcrepo/data -Dfcrepo.velocity.runtime.log=/opt/tomcat/logs/velocity.log -Dfcrepo.jms.baseUrl=http://localhost:8080/fcrepo/rest -Dfcrepo.autoversioning.enabled=false -DconnectionTimeout=-1 -Dfcrepo.db.url=jdbc:postgresql://localhost:5432/fcrepo -Dfcrepo.db.user=fedora -Dfcrepo.db.password=fedora -server -Xmx1500m -Xms1000m"
+> 3 | export JAVA_OPTS="-Djava.awt.headless=true -Dfcrepo.home=/opt/fcrepo/data -Dfcrepo.velocity.runtime.log=/opt/tomcat/logs/velocity.log -Dfcrepo.jms.baseUrl=http://localhost:8080/fcrepo/rest -Dfcrepo.autoversioning.enabled=false -DconnectionTimeout=-1 -Dfcrepo.db.url=jdbc:postgresql://localhost:5432/FEDORA_DB -Dfcrepo.db.user=FEDORA_DB_USER -Dfcrepo.db.password=FEDORA_DB_PASSWORD -server -Xmx1500m -Xms1000m"
 
 
 **After**:
-> 3 | export JAVA_OPTS="-Djava.awt.headless=true -Dfcrepo.home=/otp/fcrepo/data -Dfcrepo.velocity.runtime.log=/opt/tomcat/logs/velocity.log -Dfcrepo.jms.baseUrl=http://localhost:8080/fcrepo/rest -Dfcrepo.autoversioning.enabled=false -DconnectionTimeout=-1 -Dfcrepo.db.url=jdbc:postgresql://localhost:5432/fcrepo -Dfcrepo.db.user=fedora -Dfcrepo.db.password=fedora -Dcom.bigdata.rdf.sail.webapp.ConfigParams.propertyFile=/opt/blazegraph/conf/RWStore.properties -Dlog4j.configuration=file:/opt/blazegraph/conf/log4j.properties -server -Xmx1500m -Xms1000m"
+> 3 | export JAVA_OPTS="-Djava.awt.headless=true -Dfcrepo.home=/opt/fcrepo/data -Dfcrepo.velocity.runtime.log=/opt/tomcat/logs/velocity.log -Dfcrepo.jms.baseUrl=http://localhost:8080/fcrepo/rest -Dfcrepo.autoversioning.enabled=false -DconnectionTimeout=-1 -Dfcrepo.db.url=jdbc:postgresql://localhost:5432/FEDORA_DB -Dfcrepo.db.user=FEDORA_DB_USER -Dfcrepo.db.password=FEDORA_DB_PASSWORD -Dcom.bigdata.rdf.sail.webapp.ConfigParams.propertyFile=/opt/blazegraph/conf/RWStore.properties -Dlog4j.configuration=file:/opt/blazegraph/conf/log4j.properties -server -Xmx1500m -Xms1000m"
 
 
 ### Restarting Tomcat

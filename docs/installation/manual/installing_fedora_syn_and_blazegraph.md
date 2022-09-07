@@ -49,7 +49,7 @@ The Fedora configuration is going to come in a few different chunks that need to
 
 The basics of these configuration files have been pulled largely from the templates in [Islandora-Devops/ansible-role-fcrepo](https://github.com/islandora-devops/ansible-role-fcrepo); you may consider referencing the playbook’s templates directory for more details.
 
-`i8_namespaces.cnd` is a list of namespaces used by Islandora 8 that may not necessarily be present in Fedora; we add them here to ensure we can use them in queries.
+`i8_namespaces.cnd` is a list of namespaces used by Islandora that may not necessarily be present in Fedora; we add them here to ensure we can use them in queries.
 
 `/opt/fcrepo/config/i8_namespaces.cnd | tomcat:tomcat/644`
 ```
@@ -378,7 +378,7 @@ sudo chown -R tomcat:tomcat /opt/blazegraph
 
 ### Downloading and Placing the Blazegraph WAR
 
-The Blazegraph `.war` file can be found in a few different places, but to ensure we’re able to easily `wget` it, we’re going to use the [maven.org](https://maven.org/) repository link to grab it.
+The Blazegraph `.war` file can be found in a few different places, but to ensure we’re able to easily `wget` it, we’re going to use the [maven.org](https://search.maven.org/) repository link to grab it.
 
 ```bash
 cd /opt

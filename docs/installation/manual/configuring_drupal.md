@@ -94,7 +94,7 @@ Components we've now downloaded using `composer require` can be enabled simultan
 
 ```bash
 cd /opt/drupal
-drush -y en rdf responsive_image devel syslog serialization basic_auth rest restui search_api_solr search_api_solr_defaults facets content_browser pdf admin_toolbar islandora_defaults controlled_access_terms_defaults islandora_breadcrumbs islandora_iiif islandora_oaipmh
+drush -y en rdf responsive_image devel syslog serialization basic_auth rest restui search_api_solr facets content_browser pdf admin_toolbar islandora_defaults controlled_access_terms_defaults islandora_breadcrumbs islandora_iiif islandora_oaipmh
 # If Carapace was downloaded, now is the time to enable and set it as well.
 drush -y theme:enable carapace
 drush -y config-set system.theme default carapace
@@ -135,9 +135,9 @@ If you installed Cantaloupe 5 according with the default configuration, it is li
 
 ![Configuring Islandora IIIF](../../assets/configuring_iiif.png)
 
-Next, configure Openseadragon by navigating to `/admin/config/media/openseadragon` and ensuring everything is set up properly.
+Next, configure OpenSeadragon by navigating to `/admin/config/media/openseadragon` and ensuring everything is set up properly.
 
-![Configuring Openseadragon](../../assets/configuring_openseadragon.png)
+![Configuring OpenSeadragon](../../assets/configuring_openseadragon.png)
 
 ### Establishing Flysystem as the Default Download Method
 
@@ -161,4 +161,13 @@ Finally, to get everything up and running, run the Islandora Core Features and I
 ```bash
 cd /opt/drupal
 sudo -u www-data drush -y -l localhost --userid=1 mim --group=islandora
+```
+
+### Enabling EVA Views
+
+Some views provided by Islandora are not enabled by default.
+
+```bash
+cd /opt/drupal
+drush -y views:enable display_media
 ```

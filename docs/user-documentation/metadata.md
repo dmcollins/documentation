@@ -1,13 +1,13 @@
-# Metadata in Islandora 8
+# Metadata in Islandora
 
-> TL;DR: In Islandora 8, metadata is stored in Drupal, in _fields_ attached to _entities_ (nodes or media). This allows us to interact with metadata (add, edit, remove, display, index in a search engine...) almost entirely using standard Drupal processes. If exporting this metadata to Fedora and/or a triplestore, the values are serialized to RDF using mappings that can be set for each bundle.
+> TL;DR: In Islandora, metadata is stored in Drupal, in _fields_ attached to _entities_ (nodes or media). This allows us to interact with metadata (add, edit, remove, display, index in a search engine...) almost entirely using standard Drupal processes. If exporting this metadata to Fedora and/or a triplestore, the values are serialized to RDF using mappings that can be set for each bundle.
 
 !!! note "Drupal 8 Terminology"
     In Drupal 8, Fields can be attached to _bundles_ (sometimes called _entity sub-types_ -- e.g. Content types, Media types, Vocabularies) or _entities_ (e.g. Users). For more on Fields, see ["2.3 Content Entities and Fields"](https://www.drupal.org/docs/user_guide/en/planning-data-types.html) and ["6.3 Adding Basic Fields to a Content Type"](https://www.drupal.org/docs/user_guide/en/structure-fields.html) in the Official Drupal Guide.
 
 <!-- Next revision: check status of changing 'bundles' to 'entity sub-types' (https://www.drupal.org/project/drupal/issues/1380720). -->
 
-As described in the [resource nodes section](resource-nodes.md), Islandora 8 digital objects are comprised of _Drupal nodes_ for descriptive metadata, _Drupal media_ for technical metadata, and _Drupal files_ for the binary objects. This section describes how Islandora 8 uses and extends Drupal fields to manage descriptive metadata.
+As described in the [resource nodes section](resource-nodes.md), Islandora digital objects are comprised of _Drupal nodes_ for descriptive metadata, _Drupal media_ for technical metadata, and _Drupal files_ for the binary objects. This section describes how Islandora uses and extends Drupal fields to manage descriptive metadata.
 
 ## Content Types
 
@@ -83,11 +83,38 @@ Each of these vocabularies has its own set of fields allowing repositories to fu
 
 The vocabularies provided by default are a starting point, and a repository administrator can create whatever vocabularies are desired.
 
+!!! warning "Large Taxonomy Vocabularies"
+    The Drupal Taxonomy UI is known to break down when your vocabularies get large (e.g. over 20,000 terms). Jonathan Hunt created the [CCA Taxonomy Manager](https://github.com/catalyst/cca_taxonomy_manager) module for SFU to solve this problem.
+
 ## Field Types
 
 Fields are where descriptive and administrative metadata about Drupal entities is stored. There are different *types* of fields including boolean, datetime, entity reference, integer, string, text, and text_with_summary. These field types also have *widgets* (controlling how data is entered) and *formatters* (controlling how data is displayed). The [Drupal 8 documentation on FieldTypes, FieldWidgets, and FieldFormatters](https://www.drupal.org/docs/8/api/entity-api/fieldtypes-fieldwidgets-and-fieldformatters) includes a list of the core field types with brief definitions, along with a list of core widgets and formatters. [Custom field types can be created](https://www.drupal.org/docs/creating-custom-modules/creating-custom-field-types-widgets-and-formatters) to represent data in ways not provided by these core options.
 
-More field types, formatters, and widgets are available in various modules.For example, the controlled_access_terms module provides two additional field types designed specifically for use with Islandora: ETDF, and Typed Relation. These and the Entity Reference field type are described in more detail below, since they are of particular interest for Islandora users.
+More field types, formatters, and widgets are available in various modules. For example, the controlled_access_terms module provides two additional field types designed specifically for use with Islandora: ETDF, and Typed Relation. These and the Entity Reference field type are described in more detail below, since they are of particular interest for Islandora users.
+
+### Authority Link
+
+The Authority Link data type configures fields to hold two associated values:
+    - An external source authority (selected from a pre-configured list of external authority options).
+    - A link for a specific term from the selected external source authority.
+
+Within Islandora, this data type is used by a metadata field in Taxonomy Vocabularies called Authority Sources to capture equivalent representations of terms from external authority sources.
+
+!!! tip
+    The term external authority source refers to both controlled vocabularies like Art & Architecture Thesaurus or FAST as well as Name Authority Files like Library of Congress Name Authority File or VIAF.
+
+For instance, if you are creating a term called Red squirrels within the default Taxonomy Vocabulary Subject, you may want to include the URI for Tamiasciurus from the FAST (Faceted Application of Subject Terminology) vocabulary. If you configured the field Authority Sources to list FAST (Faceted Application of Subject Terminology) as an external source authority option, you can select this source and add the associated URI (http://id.worldcat.org/fast/1142424).
+
+![Screenshot of filling out an Authority Sources field.](https://user-images.githubusercontent.com/32551917/182199562-46b6cc29-1a49-425c-8332-fbfff5eb44c6.png)
+
+#### Configurations for Authority Sources field
+
+Each Taxonomy Vocabulary can have different external source authority options for its Authority Sources field. To configure the Authority Sources field to change these options, navigate to Home-->Administration-->Structure-->Taxonomy-->Edit *Taxonomy Vocabulary Name*-->*Taxonomy Vocabulary Name* and select "Edit" for the Authority Sources field. Then enter your options in the Authority Sources text box, entering one value per line in the format key|label.
+The key is the stored value (typically an abbreviation representing the authority source). The label will be used in displayed values and editing forms.
+
+![Screenshot of the Authority Sources text box shown when editing the Authority Sources field.](https://user-images.githubusercontent.com/32551917/182200917-9d29fa07-3e4f-4850-a9c5-9bc270cc0c85.png)
+
+By default, this field is repeatable. To change this, edit the "Field settings" and change Allowed numbers of values from "Unlimited" to "Limited" and enter the number of allowable values. This will apply to every instance of the Authority Sources field across your Taxonomy Vocabularies. You cannot change the repeatability of Authority Sources after data has been entered in the field.
 
 ### Entity Reference
 
@@ -322,7 +349,7 @@ will map the Repository item's *title* field to `http://purl.org/dc/terms/title`
 
 ### Typed Relation fields in RDF
 
-Unlike other fields, which can be assigned RDF predicates in RDF Mapping yaml files, a typed relation field uses a different predicate depending on the chosen type. These predicates are assigned using the 'keys' in the key\|value configuration. The key must be formatted `namespace:predicate`, e.g. `relators:act`.
+Unlike other fields, which can be assigned RDF predicates in RDF Mapping YAML files, a typed relation field uses a different predicate depending on the chosen type. These predicates are assigned using the 'keys' in the key\|value configuration. The key must be formatted `namespace:predicate`, e.g. `relators:act`.
 
 !!! bug Current RDF limitations
     The Drupal RDF module is currently limited in the complexity of graph you can generate. All fields must be mapped directly to either a literal value, or a reference to another content type instance, media type instance, or taxonomy term instance. It is not currently possible to create [blank nodes](https://en.wikipedia.org/wiki/Blank_node) or [skolemized nodes](https://www.w3.org/2011/rdf-wg/wiki/Skolemisation) for nesting fields under more complex structures.
